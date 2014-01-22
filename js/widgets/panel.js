@@ -297,7 +297,7 @@ $.widget( "mobile.panel", {
 					}
 
 					if ( !immediate && $.support.cssTransform3d && !!o.animate ) {
-						self.document.on( self._transitionEndEvents, complete );
+						self.element.animationComplete( complete, "transition" );
 					} else {
 						setTimeout( complete, 0 );
 					}
@@ -329,7 +329,6 @@ $.widget( "mobile.panel", {
 					}
 				},
 				complete = function() {
-					self.document.off( self._transitionEndEvents, complete );
 
 					if ( o.display !== "overlay" ) {
 						self._wrapper().addClass( o.classes.pageContentPrefix + "-open" );
@@ -361,11 +360,6 @@ $.widget( "mobile.panel", {
 				o = this.options,
 
 				_closePanel = function() {
-					if ( !immediate && $.support.cssTransform3d && !!o.animate ) {
-						self.document.on( self._transitionEndEvents, complete );
-					} else {
-						setTimeout( complete, 0 );
-					}
 
 					self.element.removeClass( o.classes.panelOpen );
 
@@ -374,13 +368,17 @@ $.widget( "mobile.panel", {
 						self._fixedToolbars().removeClass( self._pageContentOpenClasses );
 					}
 
+					if ( !immediate && $.support.cssTransform3d && !!o.animate ) {
+						self.element.animationComplete( complete, "transition" );
+					} else {
+						setTimeout( complete, 0 );
+					}
+
 					if ( self._modal ) {
 						self._modal.removeClass( self._modalOpenClasses );
 					}
 				},
 				complete = function() {
-					self.document.off( self._transitionEndEvents, complete );
-
 					if ( o.theme && o.display !== "overlay" ) {
 						self._page().parent().removeClass( o.classes.pageContainer + "-themed " + o.classes.pageContainer + "-" + o.theme );
 					}
@@ -419,8 +417,6 @@ $.widget( "mobile.panel", {
 		this[ this._open ? "close" : "open" ]();
 	},
 
-	_transitionEndEvents: "webkitTransitionEnd oTransitionEnd otransitionend transitionend msTransitionEnd",
-
 	_destroy: function() {
 		var otherPanels,
 		o = this.options,
@@ -454,10 +450,6 @@ $.widget( "mobile.panel", {
 
 			this.document.off( "panelopen panelclose" );
 
-			if ( this._open ) {
-				this.document.off( this._transitionEndEvents );
-				$.mobile.resetActivePageHeight();
-			}
 		}
 
 		if ( this._open ) {
@@ -472,8 +464,7 @@ $.widget( "mobile.panel", {
 			.off( "panelbeforeopen" )
 			.off( "panelhide" )
 			.off( "keyup.panel" )
-			.off( "updatelayout" )
-			.off( this._transitionEndEvents );
+			.off( "updatelayout" );
 
 		this._closeLink.off( "click.panel" );
 

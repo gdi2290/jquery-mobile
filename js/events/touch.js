@@ -195,7 +195,8 @@ define( [ "jquery", "../jquery.mobile.vmouse", "../jquery.mobile.support.touch" 
 
 					stop = $.event.special.swipe.stop( event );
 					if ( !emitted ) {
-						emitted = $.event.special.swipe.handleSwipe( start, stop, thisObject, origTarget );
+						emitted = true;
+						$.event.special.swipe.handleSwipe( start, stop, thisObject, origTarget );
 					}
 					// prevent scrolling
 					if ( Math.abs( start.coords[ 0 ] - stop.coords[ 0 ] ) > $.event.special.swipe.scrollSupressionThreshold ) {

@@ -12,6 +12,7 @@ define( [
 	"./navigation/method",
 	"./jquery.mobile.events",
 	"./jquery.mobile.support",
+	"./jquery.mobile.animationComplete",
 	"jquery.hashchange",
 	"./widgets/pagecontainer",
 	"./widgets/page",
@@ -110,17 +111,7 @@ define( [
 
 	/* exposed $.mobile methods */
 
-	//animation complete callback
-	$.fn.animationComplete = function( callback ) {
-		if ( $.support.cssTransitions ) {
-			return $( this ).one( "webkitAnimationEnd animationend", callback );
-		}
-		else{
-			// defer execution for consistency between webkit/non webkit
-			setTimeout( callback, 0 );
-			return $( this );
-		}
-	};
+	
 
 	$.mobile.changePage = function( to, options ) {
 		$.mobile.pageContainer.pagecontainer( "change", to, options );
