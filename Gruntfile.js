@@ -902,7 +902,15 @@ module.exports = function( grunt ) {
 
 	grunt.registerTask( "updateDependencies", [ "bowercopy" ] );
 
-	grunt.registerTask( "test", [ "clean:testsOutput", "jshint", "config:fetchHeadHash", "js:release", "connect", "qunit:http" ] );
+	grunt.registerTask( "test",
+		[
+			"clean:testsOutput",
+			"jshint",
+			"config:fetchHeadHash",
+			"js:release",
+			"connect", "qunit:http"
+		]
+	);
 	grunt.registerTask( "test:ci", [ "qunit_junit", "connect", "qunit:http" ] );
 
 	// Default grunt
